@@ -1,10 +1,8 @@
-public class BackPropagationTrainer extends Trainer {
+public class BackPropagationTrainer {
 
-	private static final double SPEED = .1;
+	private static final double SPEED = 3;
 
-	@Override
-	public void train(NeuralNetwork net, ProblemSet pSet) {
-
+	public static void train(NeuralNetwork net, ProblemSet pSet) {
 		Matrix[] wGradient = new Matrix[net.getLayerCount() - 1];
 		Matrix[] bGradient = new Matrix[net.getLayerCount() - 1];
 		for (int l = 1; l <= wGradient.length; l++) {
@@ -24,12 +22,18 @@ public class BackPropagationTrainer extends Trainer {
 
 			// calculate output layer error
 			Matrix answer = pSet.getMSolution(problemId);
+			System.out.println("GOAL LAST LAYER: ");
+			System.out.println(answer);
+			System.out.println("ACTUAL LAST LAYER: ");
 
 			int lastLayer = net.getLayerCount() - 1;
+			System.out.println(net.activation[lastLayer]);
 			error[lastLayer] = net.activation[lastLayer].minus(answer).elementMult(net.dSigmoid(lastLayer));
 
+			System.out.println("ERROR: ");
+			System.out.println(error[lastLayer]);
 			// propagate error backwards
-			for (int l = lastLayer - 1; l > 0; l--) {
+			for (int l = lastLayer - 1; l >= 0; l--) {
 				error[l] = net.weight[l].transpose().mult(error[l + 1]).elementMult(net.dSigmoid(l));
 			}
 

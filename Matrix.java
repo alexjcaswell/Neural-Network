@@ -19,6 +19,14 @@ class Matrix implements Serializable{
 		}
 	}
 
+	public void rand(double min, double max){
+		for(int x = 0; x < width; x ++){
+			for(int y = 0; y < height; y ++){
+				mat[x][y] = Math.random()*(max - min) - min;
+			}
+		}
+	}
+
 	public void zero(){
 		set(0);
 	}
@@ -139,7 +147,7 @@ class Matrix implements Serializable{
 	}
 
 	public double get(int x, int y){
-		return mat[x][y];
+		return mat[y][x];
 	}
 
 	public void set(int i, double d){
@@ -151,6 +159,14 @@ class Matrix implements Serializable{
 	}
 
 	public String toString(){
-		return width + ", " + height;
+		StringBuilder b = new StringBuilder();
+		b.append(width + ", " + height + "\n");
+		for(int y = 0; y < height; y ++){
+			for(int x = 0; x < width; x ++){
+				b.append(" " + mat[x][y]);
+			}
+			b.append("\n");
+		}
+		return b.toString();
 	}
 }

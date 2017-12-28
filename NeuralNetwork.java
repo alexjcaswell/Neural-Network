@@ -16,10 +16,10 @@ public class NeuralNetwork implements Serializable{
 		for (int i = 0; i < layerSize.length; i++) {
 			if (i == 0) {
 				weight[i] = new Matrix(layerSize[i], inputSize);
-				weight[i].set(1);
+				weight[i].rand(-.5,.5);
 			} else {
 				weight[i] = new Matrix(layerSize[i], layerSize[i - 1]);
-				weight[i].set(1);
+				weight[i].rand(-.5,.5);
 			}
 			bias[i] = new Matrix(layerSize[i], 1);
 			activation[i+1] = new Matrix(layerSize[i], 1);
@@ -49,6 +49,9 @@ public class NeuralNetwork implements Serializable{
 	public void calculate(){
 		for(int i = 1; i < activation.length; i ++){
 			activation[i] = sigmoid(weight[i-1].mult(activation[i-1]).plus(bias[i-1]));
+			// for(int n = 0; n < activation[i].numRows(); n ++){
+			// 	System.out.println(activation[i].get(n));
+			// }
 		}
 	}
 	
@@ -85,4 +88,17 @@ public class NeuralNetwork implements Serializable{
 	}
 
 
+	public String toString(){
+		StringBuilder b = new StringBuilder();
+		b.append("NeuralNetwork: ");
+		for(int l = 0; l < activation.length; l ++){
+			b.append(activation[l].numRows() + " ");
+		}
+		b.append("\n");
+		for(int l = 1; l < activation.length; l ++){
+			b.append("LAYER: " + l + "\n");
+			b.append(weight[l-1]);
+		}
+		return b.toString();
+	}
 }
